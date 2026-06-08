@@ -12,7 +12,7 @@ import java.time.Instant;
 @Table(name = "file_meta_data")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FileMetaData {
+public class FileMetadata {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
