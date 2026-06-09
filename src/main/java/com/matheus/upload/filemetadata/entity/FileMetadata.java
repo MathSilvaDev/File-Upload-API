@@ -26,4 +26,10 @@ public class FileMetadata {
 
     @CreationTimestamp
     private Instant uploadDate;
+
+    public FileMetadata(String originalName, String storedName, Long size){
+        this.originalName = originalName;
+        this.storedName = storedName;
+        this.size = size;
+    }
 }

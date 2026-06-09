@@ -1,5 +1,6 @@
 package com.matheus.upload.filemetadata.controller;
 
+import com.matheus.upload.filemetadata.dto.response.FileMetadataResponse;
 import com.matheus.upload.filemetadata.service.FileMetadataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -20,11 +21,10 @@ public class FileMetadataController {
     private final FileMetadataService fileMetadataService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> upload(
+    public ResponseEntity<FileMetadataResponse> upload(
             @RequestParam("file") MultipartFile file) throws IOException {
 
-        fileMetadataService.upload(file);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(
+                fileMetadataService.upload(file));
     }
 }
