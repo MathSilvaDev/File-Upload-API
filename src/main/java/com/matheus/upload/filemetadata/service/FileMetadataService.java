@@ -4,9 +4,6 @@ import com.matheus.upload.filemetadata.dto.response.FileMetadataResponse;
 import com.matheus.upload.filemetadata.entity.FileMetadata;
 import com.matheus.upload.filemetadata.repository.FileMetadataRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
