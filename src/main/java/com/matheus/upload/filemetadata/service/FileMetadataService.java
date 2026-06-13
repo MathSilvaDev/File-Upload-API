@@ -1,6 +1,7 @@
 package com.matheus.upload.filemetadata.service;
 
 import com.matheus.upload.filemetadata.dto.response.FileMetadataResponse;
+import com.matheus.upload.filemetadata.dto.response.FileUploadEvent;
 import com.matheus.upload.filemetadata.entity.FileMetadata;
 import com.matheus.upload.filemetadata.repository.FileMetadataRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ import java.nio.file.Paths;
 @RequiredArgsConstructor
 public class FileMetadataService {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, FileUploadEvent> kafkaTemplate;
     private final ObjectMapper objectMapper;
 
     private final FileMetadataRepository fileMetadataRepository;
@@ -58,13 +59,14 @@ public class FileMetadataService {
 
         FileMetadata fileMetadata = saveMultiPartfile(response);
 
-        String json = objectMapper.writeValueAsString(fileMetadata);
 
-        kafkaTemplate.send("uploaded-file", json);
+        FileUploadEvent event = new FileUploadEvent(
+                fileMetadata.getOriginalName(),
+                fileMetadata.getStoredName(),
+                fileMetadata.getSize()
+        );
 
-        System.out.println("=================================");
-        System.out.println("======UPLOADED SUCCESSFULLY======");
-        System.out.println("=================================");
+        kafkaTemplate.send("uploaded-file", event);
 
         return toResponse(fileMetadata);
     }

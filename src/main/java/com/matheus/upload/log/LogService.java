@@ -1,6 +1,6 @@
 package com.matheus.upload.log;
 
-import com.matheus.upload.filemetadata.entity.FileMetadata;
+import com.matheus.upload.filemetadata.dto.response.FileUploadEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -15,14 +15,12 @@ public class LogService {
     private final ObjectMapper objectMapper;
 
     @KafkaListener(topics = "uploaded-file", groupId = "log-group")
-    public void uploadFileLog(String jsonFile){
-
-        FileMetadata file = objectMapper.readValue(jsonFile, FileMetadata.class);
+    public void uploadFileLog(FileUploadEvent event){
 
         String message = String.format("%n==========%n" +
                         "INFO: Original Name: %s%nStored Name: %s%nSize: %d" +
                         "%n==========",
-                file.getOriginalName(), file.getStoredName(), file.getSize());
+                event.originalName(), event.storedName(), event.size());
 
         log.info(message);
     }
